@@ -3,7 +3,7 @@ import sqlite3
 import os
 import re
 
-class CreateTaiwanPresidentialElectionDB2024DB:
+class CreateTaiwanPresidentialElection2024DB:
     def __init__(self):
         file_names = os.listdir("data")
         county_names = []
@@ -92,5 +92,5 @@ class CreateTaiwanPresidentialElectionDB2024DB:
         cur.execute(create_view_sql)
         connection.close()
 
-create_taiwan_presidential_election_2024_db = CreateTaiwanPresidentialElectionDB2024DB()
+create_taiwan_presidential_election_2024_db = CreateTaiwanPresidentialElection2024DB()
 create_taiwan_presidential_election_2024_db.create_db()
