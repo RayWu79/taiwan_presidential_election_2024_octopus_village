@@ -8,22 +8,16 @@ def create_gradio_df():
     votes_by_village = pd.read_sql("""SELECT * FROM votes_by_village;""", con=connection)
     connection.close()
     total_votes = votes_by_village["sum_votes"].sum()
-    # print(votes_by_village.groupby("number")["sum_votes"].sum())
     country_persentage = votes_by_village.groupby("number")["sum_votes"].sum() / total_votes
-    # print(country_persentage)
     vector_a = country_persentage.values
-    # print(vector_a)
     groupby_variables = ["county", "town", "village"]
     village_total_votes = votes_by_village.groupby(groupby_variables)["sum_votes"].sum()
-    # print(village_total_votes)
     merged = pd.merge(votes_by_village, village_total_votes, left_on=groupby_variables, right_on=groupby_variables, how="left")
     merged["village_percentage"] = merged["sum_votes_x"] / merged["sum_votes_y"]
     merged = merged[["county", "town", "village", "number", "village_percentage"]]
-    # print(merged)
     pivot_df = merged.pivot(index=["county", "town", "village"], columns="number",
                             values="village_percentage").reset_index()
     pivot_df = pivot_df.rename_axis(None, axis=1)
-    # print(pivot_df)
 
     cosine_similarities = []
     length_vector_a = pow((vector_a**2).sum(), 0.5)
